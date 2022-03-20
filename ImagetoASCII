@@ -1,0 +1,48 @@
+from PIL import Image,ImageDraw, ImageFont
+
+import math
+
+#ascii characters(from higher to lower density)
+chars = ['@', '%', '#', '*', '+', '=', '-', ':', '.']
+
+#resizing the image depending on a newer width
+def resize(img, newwidth=100):
+    width, height = img.size
+    ratio = height/width
+    newheight = int(ratio * newwidth)
+    newimage = image.resize((newwidth, newheight))
+    return(newimage)
+
+#grayscaling of each pixel in the image
+def grayify(img):
+    grayscale_img = img.convert("L")
+    return(grayscale_img)
+
+#converting each pixel of the image into ASCII characters
+def pixels_to_ascii(img):
+    pixels = image.getdata()
+    characters = "".join([chars[pixel//25] for pixel in pixels])
+
+def main(newwidth = 100):
+    path = input("Please enter a VALID location of your desired image:")
+    try:
+        img=PIL.Image.open(path)
+    except:
+        print(path, "is not a correct location.")
+
+    #finally converting the image into ASCII
+    new_image_data = pixels_to_ascii(grayify(resize(img)))
+
+    #format
+    pixel_count = len(new_image_data)
+    ascii_image = "\n".join(new_image_data[i:(i+newwidth)] for i in range(0, pixel_count, newwidth))
+
+    #print the image
+    print(ascii_image)
+
+    #save the result to "ascii_image.txt"
+    with open("ascii_image.txt", "w") as f:
+        f.write(ascii_image)
+
+main()
+        
